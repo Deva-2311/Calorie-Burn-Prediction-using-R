@@ -105,7 +105,7 @@ perf <- data.frame(Model = c("Linear Regression", "Random Forest"), RMSE = c(lm_
 p_perf <- ggplot(perf, aes(x = Model, y = RMSE, fill = Model)) +
   geom_bar(stat = "identity") +
   labs(title = "Model Performance (Lower is Better)") +
-  scale_fill_manual(values = c("#00BFFF", "#32CD32"))
+  scale_fill_manual(values = c("#88BDF2", "#6A89A7"))
 ggsave("plots/model_comparison.png", p_perf, width = 8, height = 6)
 cat("Saved Model Comparison plot to plots/model_comparison.png\n")
 readline("Press [Enter] to display Model Comparison plot...")
@@ -120,7 +120,7 @@ p_resid <- ggplot(res) +
   geom_histogram(aes(x = Residuals_LM, fill = "Linear Regression"), alpha = 0.6, bins = 20) +
   geom_histogram(aes(x = Residuals_RF, fill = "Random Forest"), alpha = 0.4, bins = 20) +
   labs(title = "Residuals Distribution") +
-  scale_fill_manual(values = c("Linear Regression" = "#FF5733", "Random Forest" = "#33C3FF"))
+  scale_fill_manual(values = c("Linear Regression" = "#6A89A7", "Random Forest" = "#88BDF2"))
 ggsave("plots/residual_distribution.png", p_resid, width = 8, height = 6)
 cat("Saved Residual Distribution plot to plots/residual_distribution.png\n")
 readline("Press [Enter] to display Residual Distribution plot...")
@@ -137,7 +137,7 @@ p_pred_act <- ggplot(df) +
   geom_point(aes(x = Actual, y = RandomForest, color = "Random Forest"), alpha = 0.6) +
   geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
   labs(title = "Prediction vs Actual", x = "Actual", y = "Predicted") +
-  scale_color_manual(values = c("Linear Regression" = "#FF5733", "Random Forest" = "#33C3FF"))
+  scale_color_manual(values = c("Linear Regression" = "#6A89A7", "Random Forest" = "#88BDF2"))
 ggsave("plots/prediction_vs_actual.png", p_pred_act, width = 8, height = 6)
 cat("Saved Prediction vs Actual plot to plots/prediction_vs_actual.png\n")
 readline("Press [Enter] to display Prediction vs Actual plot...")
@@ -159,7 +159,7 @@ library(grid)   # <-- REQUIRED for textGrob()
 
 
 # Same gradient as scatter
-grad_cols <- c("#ffdee9", "#b5f4fa", "#9bdcff", "#6ecbff", "#4aa3ff", "#1f7cff")
+grad_cols <- c("#BDDDFC", "#88BDF2", "#6A89A7", "#384959")
 
 
 # ----------------------------------------------------------------------
@@ -169,39 +169,39 @@ grad_cols <- c("#ffdee9", "#b5f4fa", "#9bdcff", "#6ecbff", "#4aa3ff", "#1f7cff")
 user_card <- ggplot() +
   
   annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1,
-           fill = alpha("#b5f4fa", 0.65), color = NA) +
+           fill = alpha("#88BDF2", 0.65), color = NA) +
   
   annotate("rect", xmin = 0.03, xmax = 0.97, ymin = 0.03, ymax = 0.97,
-           fill = alpha("#e7f7ff", 0.85), color = NA) +
+           fill = alpha("#BDDDFC", 0.85), color = NA) +
   
   annotate("text", x = 0.5, y = 0.89,
            label = "USER PROFILE SUMMARY",
-           size = 7, fontface = "bold", color = "#004aad",
+           size = 7, fontface = "bold", color = "#384959",
            hjust = 0.5) +
   
   # left column
   annotate("text", x = 0.10, y = 0.78, label = paste("Gender:", gender),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   annotate("text", x = 0.10, y = 0.70, label = paste("Age:", age),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   annotate("text", x = 0.10, y = 0.62, label = paste("Height:", height, "cm"),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   annotate("text", x = 0.10, y = 0.54, label = paste("Weight:", weight, "kg"),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   annotate("text", x = 0.10, y = 0.46, label = paste("BMI:", round(bmi, 2)),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   annotate("text", x = 0.10, y = 0.38, label = paste("Duration:", duration, "min"),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   annotate("text", x = 0.10, y = 0.30, label = paste("Heart Rate:", heart_rate),
-           hjust = 0, size = 4.8, color = "#003f5c") +
+           hjust = 0, size = 4.8, color = "#384959") +
   
   # prediction
   annotate("text", x = 0.75, y = 0.58,
            label = "Predicted Calories",
-           size = 5.3, fontface = "bold", color = "#1f7cff") +
+           size = 5.3, fontface = "bold", color = "#6A89A7") +
   annotate("text", x = 0.75, y = 0.43,
            label = paste0(round(pred, 1), " kcal"),
-           size = 8.0, fontface = "bold", color = "#ff003c") +
+           size = 8.0, fontface = "bold", color = "#384959") +
   
   theme_void()
 
@@ -233,7 +233,7 @@ modern_gradient_density <- function(feature, label, user_value, filename) {
   df <- gradient_line_df(dens$x, dens$y, grad_cols)
   
   p <- ggplot(df, aes(x, y)) +
-    geom_area(fill = alpha("#cfefff", 0.35)) +
+    geom_area(fill = alpha("#BDDDFC", 0.35)) +
     
     geom_line(aes(color = col), size = 1.4, show.legend = FALSE) +
     scale_color_identity() +
@@ -241,11 +241,11 @@ modern_gradient_density <- function(feature, label, user_value, filename) {
     annotate("segment",
              x = user_value, xend = user_value,
              y = 0, yend = max(df$y),
-             color = "#ff003c", size = 1.3) +
+             color = "#384959", size = 1.3) +
     
     annotate("text", x = user_value, y = max(df$y),
              label = paste("You:", round(user_value,2)),
-             color = "#ff003c", vjust = -1, size = 4.8,
+             color = "#384959", vjust = -1, size = 4.8,
              fontface = "bold") +
     
     labs(
@@ -274,10 +274,10 @@ scatter_user <- ggplot(calories, aes(Duration, Calories)) +
   geom_point(aes(color = Calories), size = 2.2, alpha = 0.7) +
   scale_color_gradientn(colors = grad_cols) +
   
-  annotate("point", x = duration, y = pred, size = 7, color = "#ff003c") +
+  annotate("point", x = duration, y = pred, size = 7, color = "#384959") +
   annotate("text", x = duration, y = pred,
            label = paste("You:", round(pred,1), "kcal"),
-           vjust = -1.3, color = "#ff003c", size = 5,
+           vjust = -1.3, color = "#384959", size = 5,
            fontface = "bold") +
   
   labs(title = "Your Predicted Calories in Dataset Context",
@@ -305,7 +305,7 @@ plot_snap <- function(feature, label, user_value) {
     annotate("segment",
              x = user_value, xend = user_value,
              y = 0, yend = Inf,
-             color = "#ff003c", size = 1.2) +
+             color = "#384959", size = 1.2) +
     
     labs(title = label, x = "", y = "Density") +
     theme_minimal(base_family = "Poppins")

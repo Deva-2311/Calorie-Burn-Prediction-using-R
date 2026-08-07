@@ -48,7 +48,7 @@ best_model <- ifelse(lm_rmse < rf_rmse, "Linear Regression", "Random Forest")
 
 # -------------------- Gradient palette (your requested palette) --------------------
 # pink → aqua → soft blue → deep blue
-grad_cols <- c("#ffdee9", "#b5f4fa", "#9bdcff", "#6ecbff", "#4aa3ff", "#1f7cff")
+grad_cols <- c("#BDDDFC", "#88BDF2", "#6A89A7", "#384959")
 
 # Helper to compute gradient-for-line dataframe
 gradient_line_df <- function(x, y, cols) {
@@ -63,11 +63,11 @@ ui <- fluidPage(
   tags$head(
     tags$style(HTML("
       /* Background gradient (requested) */
-      body { background: linear-gradient(180deg, #00d2ff 0%, #3a7bd5 100%); font-family: 'Poppins'; }
+      body { background: linear-gradient(180deg, #BDDDFC 0%, #6A89A7 100%); font-family: 'Poppins'; }
 
       /* Nav tabs/title look */
       .nav-tabs > li > a { color: white; font-weight: bold; background-color: transparent; }
-      .nav-tabs > li > a:hover { background-color: #4CAF50; color: white; }
+      .nav-tabs > li > a:hover { background-color: #6A89A7; color: white; }
 
       /* Centralize plots */
       .tab-content .shiny-plot-output, .tab-content .plotly.html-widget {
@@ -82,7 +82,7 @@ ui <- fluidPage(
 
       /* Recommendation card header and card */
       .rec-title { font-size: 36px; color: #FFFFFF; font-weight: bold; padding-left: 8px; }
-      .rec-card { background: rgba(255,255,255,0.95); border-radius: 8px; padding: 22px; color: #003f5c; margin-top: 10px; }
+      .rec-card { background: rgba(255,255,255,0.95); border-radius: 8px; padding: 22px; color: #384959; margin-top: 10px; }
 
       /* Buttons: stacked, full-width and nicely spaced */
       .btn-stack { width: 100%; margin-bottom: 12px; display: block; }
@@ -208,7 +208,7 @@ server <- function(input, output, session) {
     p <- ggplot(perf, aes(x = Model, y = RMSE, fill = Model)) +
       geom_bar(stat = "identity") +
       labs(title = "Model Performance (Lower is Better)") +
-      scale_fill_manual(values = c("#00BFFF", "#32CD32"))
+      scale_fill_manual(values = c("#88BDF2", "#6A89A7"))
     ggplotly(p)
   })
   
@@ -218,7 +218,7 @@ server <- function(input, output, session) {
       geom_histogram(aes(x = Residuals_LM, fill = "Linear Regression"), alpha = 0.6, bins = 20) +
       geom_histogram(aes(x = Residuals_RF, fill = "Random Forest"), alpha = 0.4, bins = 20) +
       labs(title = "Residuals Distribution") +
-      scale_fill_manual(values = c("Linear Regression" = "#FF5733", "Random Forest" = "#33C3FF"))
+      scale_fill_manual(values = c("Linear Regression" = "#6A89A7", "Random Forest" = "#88BDF2"))
     ggplotly(p)
   })
   
@@ -229,7 +229,7 @@ server <- function(input, output, session) {
       geom_point(aes(x = Actual, y = RandomForest, color = "Random Forest"), alpha = 0.6) +
       geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
       labs(title = "Prediction vs Actual", x = "Actual", y = "Predicted") +
-      scale_color_manual(values = c("Linear Regression" = "#FF5733", "Random Forest" = "#33C3FF"))
+      scale_color_manual(values = c("Linear Regression" = "#6A89A7", "Random Forest" = "#88BDF2"))
     ggplotly(p)
   })
   
@@ -243,14 +243,14 @@ server <- function(input, output, session) {
     p <- ggplot(calories, aes(Duration, Calories)) +
       geom_point(aes(color = Calories), size = 2.2, alpha = 0.75) +
       scale_color_gradientn(colors = grad_cols) +
-      annotate("point", x = duration, y = pred_val, size = 7, color = "#ff003c") +
+      annotate("point", x = duration, y = pred_val, size = 7, color = "#384959") +
       annotate("text",
                x = user_label_x(duration),
                y = pred_val,
                label = paste0("You: ", round(pred_val, 1), " kcal"),
                vjust = 0.5,
                hjust = ifelse(duration > 0.85 * max(calories$Duration, na.rm = TRUE), 1, 0),
-               color = "#ff003c", fontface = "bold", size = 5) +
+               color = "#384959", fontface = "bold", size = 5) +
       labs(title = "Your Predicted Calories in Dataset Context", x = "Duration (min)", y = "Calories Burnt") +
       theme_minimal(base_family = "Poppins") +
       theme(plot.title = element_text(size = 16, face = "bold"))
@@ -266,22 +266,22 @@ server <- function(input, output, session) {
     
     p_age <- ggplot(calories, aes(Age)) +
       geom_histogram(aes(y = after_stat(density)), bins = 25, fill = grad_cols[4], alpha = 0.85) +
-      geom_vline(xintercept = age, color = "#ff003c", size = 1) +
+      geom_vline(xintercept = age, color = "#384959", size = 1) +
       labs(title = "Age") + theme_minimal(base_family = "Poppins")
     
     p_bmi <- ggplot(calories, aes(BMI)) +
       geom_histogram(aes(y = after_stat(density)), bins = 25, fill = grad_cols[4], alpha = 0.85) +
-      geom_vline(xintercept = bmi, color = "#ff003c", size = 1) +
+      geom_vline(xintercept = bmi, color = "#384959", size = 1) +
       labs(title = "BMI") + theme_minimal(base_family = "Poppins")
     
     p_dur <- ggplot(calories, aes(Duration)) +
       geom_histogram(aes(y = after_stat(density)), bins = 25, fill = grad_cols[4], alpha = 0.85) +
-      geom_vline(xintercept = duration, color = "#ff003c", size = 1) +
+      geom_vline(xintercept = duration, color = "#384959", size = 1) +
       labs(title = "Duration") + theme_minimal(base_family = "Poppins")
     
     p_hr <- ggplot(calories, aes(Heart_Rate)) +
       geom_histogram(aes(y = after_stat(density)), bins = 25, fill = grad_cols[4], alpha = 0.85) +
-      geom_vline(xintercept = heart_rate, color = "#ff003c", size = 1) +
+      geom_vline(xintercept = heart_rate, color = "#384959", size = 1) +
       labs(title = "Heart Rate") + theme_minimal(base_family = "Poppins")
     
     grid.arrange(p_age, p_bmi, p_dur, p_hr, ncol = 2,
@@ -293,10 +293,10 @@ server <- function(input, output, session) {
     dens <- density(calories$Age, na.rm = TRUE)
     df <- gradient_line_df(dens$x, dens$y, grad_cols)
     p <- ggplot(df, aes(x = x, y = y)) +
-      geom_area(fill = alpha("#cfefff", 0.25)) +
+      geom_area(fill = alpha("#BDDDFC", 0.25)) +
       geom_line(aes(color = col), size = 1.4, show.legend = FALSE) +
       scale_color_identity() +
-      geom_vline(xintercept = rv$newdata$Age, color = "#ff003c", size = 1.2) +
+      geom_vline(xintercept = rv$newdata$Age, color = "#384959", size = 1.2) +
       labs(title = "Age Distribution", x = "Age", y = "Density") +
       theme_minimal(base_family = "Poppins")
     print(p)
@@ -307,10 +307,10 @@ server <- function(input, output, session) {
     dens <- density(calories$BMI, na.rm = TRUE)
     df <- gradient_line_df(dens$x, dens$y, grad_cols)
     p <- ggplot(df, aes(x = x, y = y)) +
-      geom_area(fill = alpha("#cfefff", 0.25)) +
+      geom_area(fill = alpha("#BDDDFC", 0.25)) +
       geom_line(aes(color = col), size = 1.4, show.legend = FALSE) +
       scale_color_identity() +
-      geom_vline(xintercept = rv$bmi, color = "#ff003c", size = 1.2) +
+      geom_vline(xintercept = rv$bmi, color = "#384959", size = 1.2) +
       labs(title = "BMI Distribution", x = "BMI", y = "Density") +
       theme_minimal(base_family = "Poppins")
     print(p)
@@ -321,10 +321,10 @@ server <- function(input, output, session) {
     dens <- density(calories$Duration, na.rm = TRUE)
     df <- gradient_line_df(dens$x, dens$y, grad_cols)
     p <- ggplot(df, aes(x = x, y = y)) +
-      geom_area(fill = alpha("#cfefff", 0.25)) +
+      geom_area(fill = alpha("#BDDDFC", 0.25)) +
       geom_line(aes(color = col), size = 1.4, show.legend = FALSE) +
       scale_color_identity() +
-      geom_vline(xintercept = rv$newdata$Duration, color = "#ff003c", size = 1.2) +
+      geom_vline(xintercept = rv$newdata$Duration, color = "#384959", size = 1.2) +
       labs(title = "Duration Distribution", x = "Duration (min)", y = "Density") +
       theme_minimal(base_family = "Poppins")
     print(p)
@@ -333,18 +333,18 @@ server <- function(input, output, session) {
   output$summaryCard <- renderPlot({
     validate(need(!is.null(rv$pred), "Press 'Predict Calories' to view the summary."))
     p <- ggplot() +
-      annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = alpha("#b5f4fa", 0.65), color = NA) +
-      annotate("rect", xmin = 0.03, xmax = 0.97, ymin = 0.03, ymax = 0.97, fill = alpha("#e7f7ff", 0.85), color = NA) +
-      annotate("text", x = 0.5, y = 0.89, label = "USER PROFILE SUMMARY", fontface = "bold", size = 7, color = "#004aad", hjust = 0.5) +
-      annotate("text", x = 0.10, y = 0.78, label = paste("Gender:", rv$newdata$Gender), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.10, y = 0.70, label = paste("Age:", rv$newdata$Age), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.10, y = 0.62, label = paste("Height:", rv$newdata$Height, "cm"), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.10, y = 0.54, label = paste("Weight:", rv$newdata$Weight, "kg"), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.10, y = 0.46, label = paste("BMI:", round(rv$bmi, 2)), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.10, y = 0.38, label = paste("Duration:", rv$newdata$Duration, "min"), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.10, y = 0.30, label = paste("Heart Rate:", rv$newdata$Heart_Rate), hjust = 0, size = 5, color = "#003f5c") +
-      annotate("text", x = 0.75, y = 0.58, label = "Predicted Calories", size = 5.3, fontface = "bold", color = "#1f7cff") +
-      annotate("text", x = 0.75, y = 0.43, label = paste0(round(rv$pred, 1), " kcal"), size = 8, fontface = "bold", color = "#ff003c") +
+      annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = alpha("#88BDF2", 0.65), color = NA) +
+      annotate("rect", xmin = 0.03, xmax = 0.97, ymin = 0.03, ymax = 0.97, fill = alpha("#BDDDFC", 0.85), color = NA) +
+      annotate("text", x = 0.5, y = 0.89, label = "USER PROFILE SUMMARY", fontface = "bold", size = 7, color = "#384959", hjust = 0.5) +
+      annotate("text", x = 0.10, y = 0.78, label = paste("Gender:", rv$newdata$Gender), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.10, y = 0.70, label = paste("Age:", rv$newdata$Age), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.10, y = 0.62, label = paste("Height:", rv$newdata$Height, "cm"), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.10, y = 0.54, label = paste("Weight:", rv$newdata$Weight, "kg"), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.10, y = 0.46, label = paste("BMI:", round(rv$bmi, 2)), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.10, y = 0.38, label = paste("Duration:", rv$newdata$Duration, "min"), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.10, y = 0.30, label = paste("Heart Rate:", rv$newdata$Heart_Rate), hjust = 0, size = 5, color = "#384959") +
+      annotate("text", x = 0.75, y = 0.58, label = "Predicted Calories", size = 5.3, fontface = "bold", color = "#6A89A7") +
+      annotate("text", x = 0.75, y = 0.43, label = paste0(round(rv$pred, 1), " kcal"), size = 8, fontface = "bold", color = "#384959") +
       theme_void()
     print(p)
   })
@@ -391,16 +391,16 @@ server <- function(input, output, session) {
       
       draw_page_title <- function(title) {
         grid.newpage()
-        grid.rect(gp = gpar(fill = "#00d2ff", col = NA))
+        grid.rect(gp = gpar(fill = "#6A89A7", col = NA))
         grid.text(title,
                   y = 0.92,
                   gp = gpar(fontsize = 22, fontface = "bold", col = "#ffffff"))
-        grid.rect(y = 0.89, height = 0.005, gp = gpar(fill = "#3a7bd5", col = NA))
+        grid.rect(y = 0.89, height = 0.005, gp = gpar(fill = "#384959", col = NA))
       }
       
       # ---------------- COVER PAGE ----------------
       grid.newpage()
-      grid.rect(gp = gpar(fill = "#00d2ff", col = NA))
+      grid.rect(gp = gpar(fill = "#6A89A7", col = NA))
       
       grid.text("Calories Prediction Report",
                 y = 0.70,
@@ -439,7 +439,7 @@ server <- function(input, output, session) {
         geom_col(show.legend = FALSE) +
         coord_flip() +
         labs(x = "", y = "Importance") +
-        scale_fill_gradient(low = "#00d2ff", high = "#3a7bd5") +
+        scale_fill_gradient(low = "#BDDDFC", high = "#384959") +
         theme_minimal(base_family = "Poppins")
       print(p_imp)
       
@@ -449,7 +449,7 @@ server <- function(input, output, session) {
                          RMSE = c(lm_rmse, rf_rmse))
       p_perf <- ggplot(perf, aes(Model, RMSE, fill = Model)) +
         geom_bar(stat = "identity", show.legend = FALSE) +
-        scale_fill_manual(values = c("#3a7bd5", "#00d2ff")) +
+        scale_fill_manual(values = c("#384959", "#6A89A7")) +
         theme_minimal(base_family = "Poppins")
       print(p_perf)
       
@@ -464,8 +464,8 @@ server <- function(input, output, session) {
                        alpha = 0.6, bins = 25) +
         geom_histogram(aes(x = RF, fill = "Random Forest"),
                        alpha = 0.4, bins = 25) +
-        scale_fill_manual(values = c("Linear Model"="#ff6bd6",
-                                     "Random Forest"="#1f7cff")) +
+        scale_fill_manual(values = c("Linear Model"="#6A89A7",
+                                     "Random Forest"="#88BDF2")) +
         theme_minimal(base_family = "Poppins")
       print(p_resid)
       
@@ -480,7 +480,7 @@ server <- function(input, output, session) {
         geom_point(aes(Actual, Linear, color = "LM"), alpha = 0.6) +
         geom_point(aes(Actual, RF, color = "RF"), alpha = 0.6) +
         geom_abline(slope = 1, linetype = "dashed") +
-        scale_color_manual(values = c(LM="#ff6bd6", RF="#1f7cff")) +
+        scale_color_manual(values = c(LM="#6A89A7", RF="#88BDF2")) +
         theme_minimal(base_family = "Poppins")
       print(p_predact)
       
@@ -514,14 +514,14 @@ server <- function(input, output, session) {
         
         p_age <- ggplot(calories, aes(Age)) +
           geom_histogram(aes(y=after_stat(density)),
-                         bins=25, fill="#3a7bd5", alpha=0.7) +
-          geom_vline(xintercept = user$Age, color="#ff003c", size=1.2) +
+                         bins=25, fill="#6A89A7", alpha=0.7) +
+          geom_vline(xintercept = user$Age, color="#384959", size=1.2) +
           theme_minimal(base_family="Poppins")
         
         p_bmi <- ggplot(calories, aes(BMI)) +
           geom_histogram(aes(y=after_stat(density)),
-                         bins=25, fill="#3a7bd5", alpha=0.7) +
-          geom_vline(xintercept = rv$bmi, color="#ff003c", size=1.2) +
+                         bins=25, fill="#6A89A7", alpha=0.7) +
+          geom_vline(xintercept = rv$bmi, color="#384959", size=1.2) +
           theme_minimal(base_family="Poppins")
         
         grid.arrange(p_age, p_bmi, ncol = 2)
@@ -532,7 +532,7 @@ server <- function(input, output, session) {
           geom_point(aes(color = Calories), alpha = 0.7) +
           scale_color_gradientn(colors = grad_cols) +
           annotate("point", x = user$Duration, y = rv$pred,
-                   color="#ff003c", size=6) +
+                   color="#384959", size=6) +
           theme_minimal(base_family="Poppins")
         print(p_scatter)
         
